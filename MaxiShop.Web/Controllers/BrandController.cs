@@ -1,4 +1,4 @@
-﻿using MaxiShop.Application.DTO.Category;
+﻿using MaxiShop.Application.DTO.Brand;
 using MaxiShop.Application.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -7,13 +7,13 @@ namespace MaxiShop.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class BrandController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
+        private readonly IBrandService _brandService;
 
-        public CategoryController(ICategoryService categoryService)
+        public BrandController(IBrandService brandService)
         {
-            _categoryService = categoryService;
+            _brandService = brandService;
         }
 
 
@@ -21,9 +21,9 @@ namespace MaxiShop.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            var categories = await _categoryService.GetAll();
+            var brands = await _brandService.GetAll();
 
-            return Ok(categories);
+            return Ok(brands);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,30 +32,30 @@ namespace MaxiShop.Web.Controllers
         [Route("Details")]
         public async Task<ActionResult> Details(int id)
         {
-            var category = await _categoryService.GetById(id);
+            var brand = await _brandService.GetById(id);
 
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(brand);
         }
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult> Create(CreateCategoryDto dto)
+        public async Task<ActionResult> Create(CreateBrandDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var category = await _categoryService.Create(dto);
+            var brand = await _brandService.Create(dto);
 
-            return CreatedAtAction(nameof(Details), new { id = category.Id }, category);
+            return CreatedAtAction(nameof(Details), new { id = brand.Id }, brand);
         }
 
 
@@ -63,21 +63,21 @@ namespace MaxiShop.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut]
-        public async Task<ActionResult> Update(UpdateCategoryDto dto)
+        public async Task<ActionResult> Update(UpdateBrandDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var category = await _categoryService.GetById(dto.Id);
+            var brand = await _brandService.GetById(dto.Id);
 
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound("Record Not Found");
             }
 
-            await _categoryService.Update(dto);
+            await _brandService.Update(dto);
 
             return NoContent();
         }
@@ -95,14 +95,14 @@ namespace MaxiShop.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _categoryService.GetById(id);
+            var brand = await _brandService.GetById(id);
 
-            if (category == null)
+            if (brand == null)
             {
                 return NotFound("Record Not Found");
             }
 
-            await _categoryService.Delete(id);
+            await _brandService.Delete(id);
 
             return NoContent();
         }

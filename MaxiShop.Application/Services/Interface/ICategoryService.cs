@@ -13,9 +13,9 @@ namespace MaxiShop.Application.Services.Interface
 
         Task<IEnumerable<CategoryDto>> GetAll();
 
-        Task<CategoryDto> Create(CreateCategoryDto createProductCategoryDto);
+        Task<CategoryDto> Create(CreateCategoryDto createCategoryDto);
 
-        Task Update(UpdateCategoryDto updateProductCategoryDto);
+        Task Update(UpdateCategoryDto updateCategoryDto);
 
         Task Delete(int id);
       

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MaxiShop.Domain.Repositories
 {
-    public interface ICategoryRepository : IGenericRepository<Category>
+    public interface IBrandRepository : IGenericRepository<Brand>
     {
-        Task Update(Category category);
+        Task Update(Brand brand);
     }
 }

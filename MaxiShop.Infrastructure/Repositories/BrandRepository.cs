@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace MaxiShop.Infrastructure.Repositories
 {
-    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
+    public class BrandRepository : GenericRepository<Brand>, IBrandRepository
     {
-        public CategoryRepository(ApplicationDbContext dbContext) :  base (dbContext)
+        public BrandRepository(ApplicationDbContext dbContext) :  base (dbContext)
         {
             
         }
 
-        public async Task Update(Category category)
+        public async Task Update(Brand brand)
         {
-            _dbContext.Update(category);
+            _dbContext.Update(brand);
             await _dbContext.SaveChangesAsync();
         }
     }

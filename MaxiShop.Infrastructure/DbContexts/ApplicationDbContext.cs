@@ -15,6 +15,14 @@ namespace MaxiShop.Infrastructure.DbContexts
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
+
         public DbSet<Category> Category { get; set; }
+
+        public DbSet<Brand> Brand { get; set; }
     }
 }
