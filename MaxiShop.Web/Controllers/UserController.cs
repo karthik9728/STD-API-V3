@@ -27,6 +27,7 @@ namespace MaxiShop.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
+        [Route("Register")]
         public async Task<ActionResult<APIResponse>> Create(Register register)
         {
             try
@@ -44,6 +45,48 @@ namespace MaxiShop.Web.Controllers
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.Created;
                 _response.DisplayMessage = CommonMessage.RegistrationSuccess;
+                _response.Result = result;
+            }
+            catch (Exception)
+            {
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<APIResponse>> Login(Login login)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    _response.AddError(ModelState.ToString());
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.AddWarning(CommonMessage.LoginFailed);
+                    return _response;
+                }
+
+                var result = await _authService.Login(login);
+
+                if(result is string)
+                {
+                    _response.IsSuccess = true;
+                    _response.StatusCode = HttpStatusCode.OK;
+                    _response.DisplayMessage = CommonMessage.LoginFailed;
+                    _response.Result = result;
+                    return _response;
+                }
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.DisplayMessage = CommonMessage.LoginSuccess;
                 _response.Result = result;
             }
             catch (Exception)
