@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CustomPolicy",x=>x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
+
+builder.Host.UseSerilog((context, config) =>
+{
+    config.WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day);
+
+    if (context.HostingEnvironment.IsProduction() == false)
+    {
+        config.WriteTo.Console();
+    }
+});
 
 #region Database Connectivity
 
@@ -131,6 +147,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CustomPolicy");
 
 app.UseHttpsRedirection();
 

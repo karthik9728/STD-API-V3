@@ -19,11 +19,13 @@ namespace MaxiShop.Web.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly ILogger<ProductController> _logger;
         protected APIResponse _response;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _productService = productService;
+            _logger = logger;
             _response = new APIResponse();
         }
 
@@ -60,6 +62,8 @@ namespace MaxiShop.Web.Controllers
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = products;
+
+                _logger.LogInformation("Product Controller - All Products Fetched");
             }
             catch (Exception)
             {
