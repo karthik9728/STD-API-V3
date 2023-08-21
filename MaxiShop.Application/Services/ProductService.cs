@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MaxiShop.Application.DTO.Product;
+using MaxiShop.Application.InputModels;
 using MaxiShop.Application.Services.Interface;
+using MaxiShop.Application.ViewModels;
 using MaxiShop.Domain.Models;
 using MaxiShop.Domain.Repositories;
 using System;
@@ -15,11 +17,13 @@ namespace MaxiShop.Application.Services
     {
         private readonly IProductRepository _productRepo;
         private readonly IMapper _mapper;
+        private readonly IPaginationService<ProductDto, Product> _paginationService;
 
-        public ProductService(IProductRepository productRepo, IMapper mapper)
+        public ProductService(IProductRepository productRepo, IMapper mapper, IPaginationService<ProductDto, Product> paginationService)
         {
             _productRepo = productRepo;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAll()
@@ -34,6 +38,15 @@ namespace MaxiShop.Application.Services
             var product = await _productRepo.GetProductDetailsAsync(id);
 
             return _mapper.Map<ProductDto>(product);
+        }
+
+        public async Task<PaginationVM<ProductDto>> GetPagination(PaginationIP paginationInput)
+        {
+            var source = await _productRepo.GetAllProductWithDetailsAsync();
+
+            var result = _paginationService.GetPagination(source, paginationInput);
+
+            return result;
         }
 
         public async Task<ProductDto> Create(CreateProductDto createProductDto)
@@ -62,5 +75,7 @@ namespace MaxiShop.Application.Services
 
             await _productRepo.DeleteAsync(product);
         }
+
+       
     }
 }

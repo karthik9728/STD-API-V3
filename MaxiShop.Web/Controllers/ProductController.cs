@@ -1,6 +1,7 @@
 ﻿using MaxiShop.Application.ApplicationConstants;
 using MaxiShop.Application.Common;
 using MaxiShop.Application.DTO.Product;
+using MaxiShop.Application.InputModels;
 using MaxiShop.Application.Services.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,26 @@ namespace MaxiShop.Web.Controllers
             _response = new APIResponse();
         }
 
+        [ProducesResponseType(200)]
+        [HttpPost]
+        [Route("GetPagination")]
+        public async Task<ActionResult<APIResponse>> GetPagination([FromBody]PaginationIP paginationInput)
+        {
+            try
+            {
+                var categories = await _productService.GetPagination(paginationInput);
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.Result = categories;
+            }
+            catch (Exception)
+            {
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
 
         [ProducesResponseType(200)]
         [HttpGet]
