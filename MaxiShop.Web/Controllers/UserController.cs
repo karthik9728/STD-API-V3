@@ -28,7 +28,7 @@ namespace MaxiShop.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<APIResponse>> Create(Register register)
+        public async Task<ActionResult<APIResponse>> Register(Register register)
         {
             try
             {
@@ -89,9 +89,9 @@ namespace MaxiShop.Web.Controllers
                 _response.DisplayMessage = CommonMessage.LoginSuccess;
                 _response.Result = result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _response.AddError(CommonMessage.SystemError);
+                _response.AddError(CommonMessage.SystemError +  ex.Message.ToString());
             }
 
             return _response;

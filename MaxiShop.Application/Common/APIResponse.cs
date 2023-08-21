@@ -17,13 +17,13 @@ namespace MaxiShop.Application.Common
 
         public string DisplayMessage { get; set; } = "";
 
-        public List<APIError> Errors { get; private set; } = new();
+        public List<APIError> Errors { get;  set; } = new();
 
         public List<APIWarning> Warnings { get; private set; } = new();
 
         public void AddError(string errorMessage)
         {
-            APIError error = new(description:errorMessage);
+            APIError error = new(description: errorMessage);
             Errors.Add(error);
         }
 

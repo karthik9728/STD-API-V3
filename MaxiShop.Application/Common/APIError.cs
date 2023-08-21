@@ -8,7 +8,7 @@ namespace MaxiShop.Application.Common
 {
     public class APIError
     {
-        private string Description { get; set; }
+        public string Description { get; set; }
 
         public APIError(string description)
         {

@@ -8,7 +8,7 @@ namespace MaxiShop.Application.Common
 {
     public class APIWarning
     {
-        private string Description { get; set; }
+        public string Description { get; set; }
 
         public APIWarning(string description)
         {
