@@ -3,6 +3,7 @@ using MaxiShop.Application.Common;
 using MaxiShop.Application.DTO.Product;
 using MaxiShop.Application.InputModels;
 using MaxiShop.Application.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace MaxiShop.Web.Controllers
         [ProducesResponseType(200)]
         [HttpPost]
         [Route("GetPagination")]
-        public async Task<ActionResult<APIResponse>> GetPagination([FromBody]PaginationIP paginationInput)
+        public async Task<ActionResult<APIResponse>> GetPagination([FromBody] PaginationIP paginationInput)
         {
             try
             {
@@ -44,7 +45,9 @@ namespace MaxiShop.Web.Controllers
             return _response;
         }
 
+        [Authorize]
         [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet]
         public async Task<ActionResult<APIResponse>> Get()
         {
