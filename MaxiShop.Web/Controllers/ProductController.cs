@@ -53,11 +53,11 @@ namespace MaxiShop.Web.Controllers
         {
             try
             {
-                var categories = await _productService.GetAll();
+                var products = await _productService.GetAll();
 
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
-                _response.Result = categories;
+                _response.Result = products;
             }
             catch (Exception)
             {
