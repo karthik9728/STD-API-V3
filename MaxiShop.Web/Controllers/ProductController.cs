@@ -6,8 +6,11 @@ using MaxiShop.Application.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Reflection;
+using System.Text;
 
 namespace MaxiShop.Web.Controllers
 {
@@ -45,7 +48,6 @@ namespace MaxiShop.Web.Controllers
             return _response;
         }
 
-        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet]
@@ -58,6 +60,59 @@ namespace MaxiShop.Web.Controllers
                 _response.IsSuccess = true;
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = products;
+            }
+            catch (Exception)
+            {
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return _response;
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [HttpGet]
+        [Route("CSVReport")]
+        public async Task<ActionResult<APIResponse>> GetReport()
+        {
+            try
+            {
+                var products = await _productService.GetAll();
+
+                static string GetPropertyDisplayName(PropertyInfo propertyInfo)
+                {
+                    var displayNameAttribute = propertyInfo.GetCustomAttribute<DisplayNameAttribute>();
+                    return displayNameAttribute != null ? displayNameAttribute.DisplayName : propertyInfo.Name;
+                }
+
+                List<ProductDto> data = products.ToList();
+
+                if (data == null || data.Count == 0)
+                    return BadRequest("No data provided.");
+
+                StringBuilder csvBuilder = new StringBuilder();
+
+                // Get the header row from the first object in the list
+                var properties = data[0].GetType().GetProperties();
+                //var headerRow = string.Join(",", properties.Select(p => p.Name));
+                var headerRow = string.Join(",", properties.Select(GetPropertyDisplayName));
+                csvBuilder.AppendLine(headerRow);
+
+                // Add data rows
+                foreach (var obj in data)
+                {
+                    var dataRow = string.Join(",", properties.Select(p => p.GetValue(obj)?.ToString() ?? ""));
+                    csvBuilder.AppendLine(dataRow);
+                }
+
+                var csvData = csvBuilder.ToString();
+
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+
+                // Return the CSV data as a response
+                return File(Encoding.UTF8.GetBytes(csvData), "text/csv", $"Product{DateTime.UtcNow.ToString("dd-MM-yyyy")}.csv");
+
             }
             catch (Exception)
             {
