@@ -84,11 +84,46 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+#region Configuration for Seeding Data to Database
+
+static async void UpdateDatabaseAsync(IHost host)
+{
+
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+
+            if (context.Database.IsSqlServer())
+            {
+                context.Database.Migrate();
+            }
+
+            await SeedData.SeedDataAsync(context);
+        }
+        catch (Exception ex)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+            logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+        }
+    }
+
+}
+
+#endregion
+
 var app = builder.Build();
 
 var serviceProvider = app.Services;
 
 await SeedData.SeedRoles(serviceProvider);
+
+UpdateDatabaseAsync(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

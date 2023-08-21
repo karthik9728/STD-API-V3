@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MaxiShop.Domain.Models;
+using MaxiShop.Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,10 +26,50 @@ namespace MaxiShop.Infrastructure.Common
 
             foreach (var role in roles)
             {
-                if(!await roleManager.RoleExistsAsync(role.Name))
+                if (!await roleManager.RoleExistsAsync(role.Name))
                 {
                     await roleManager.CreateAsync(role);
                 }
+            }
+        }
+
+        public static async Task SeedDataAsync(ApplicationDbContext _dbContext)
+        {
+            if (!_dbContext.Brand.Any())
+            {
+                await _dbContext.AddRangeAsync(
+                    new Brand
+                    {
+                        Name = "Apple",
+                        EstablishedYear = 1956
+                    },
+                    new Brand
+                    {
+                        Name = "Samsung",
+                        EstablishedYear = 1956
+                    },
+                    new Brand
+                    {
+                        Name = "Sony",
+                        EstablishedYear = 1956
+                    },
+                    new Brand
+                    {
+                        Name = "Hp",
+                        EstablishedYear = 1956
+                    },
+                    new Brand
+                    {
+                        Name = "Lenovo",
+                        EstablishedYear = 1956
+                    },
+                    new Brand
+                    {
+                        Name = "Acer",
+                        EstablishedYear = 1956
+                    });
+
+                await _dbContext.SaveChangesAsync();
             }
         }
     }
