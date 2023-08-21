@@ -1,7 +1,10 @@
 ﻿using MaxiShop.Application.Common;
+using MaxiShop.Application.DTO.Brand;
 using MaxiShop.Application.Services;
 using MaxiShop.Application.Services.Interface;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,7 @@ namespace MaxiShop.Application
         {
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped(typeof(IPaginationService<,>), typeof(PaginationService<,>));
+
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICategoryService, CategoryService>();

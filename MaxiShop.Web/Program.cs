@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Serilog;
+using FluentValidation.AspNetCore;
+using System.Reflection;
+using MaxiShop.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +49,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 #endregion
 
 builder.Services.AddControllers();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -134,6 +139,8 @@ static async void UpdateDatabaseAsync(IHost host)
 #endregion
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 var serviceProvider = app.Services;
 

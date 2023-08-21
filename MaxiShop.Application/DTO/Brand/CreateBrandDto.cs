@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,14 @@ namespace MaxiShop.Application.DTO.Brand
         public string Name { get; set; }
 
         public int EstablishedYear { get; set; }
+    }
+
+    public class CreateBrandDtoValidator : AbstractValidator<CreateBrandDto>
+    {
+        public CreateBrandDtoValidator()
+        {
+            RuleFor(x=>x.Name).NotEmpty().NotNull();
+            RuleFor(x=>x.EstablishedYear).InclusiveBetween(1920,DateTime.UtcNow.Year);
+        }
     }
 }

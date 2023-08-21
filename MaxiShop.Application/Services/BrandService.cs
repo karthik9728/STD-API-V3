@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MaxiShop.Application.DTO.Brand;
 using MaxiShop.Application.DTO.Category;
+using MaxiShop.Application.Exceptions;
 using MaxiShop.Application.Services.Interface;
 using MaxiShop.Domain.Models;
 using MaxiShop.Domain.Repositories;
@@ -39,6 +40,16 @@ namespace MaxiShop.Application.Services
 
         public async Task<BrandDto> Create(CreateBrandDto createBrandDto)
         {
+
+            //Validate incoming data
+            var validator = new CreateBrandDtoValidator();
+
+            var validationResult = await validator.ValidateAsync(createBrandDto);
+
+            if (validationResult.Errors.Any())
+            {
+                throw new BadRequestException("Invalid Brand Input", validationResult);
+            }
 
             var brand = _mapper.Map<Brand>(createBrandDto);
 
