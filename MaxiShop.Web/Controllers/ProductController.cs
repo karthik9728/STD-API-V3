@@ -50,6 +50,7 @@ namespace MaxiShop.Web.Controllers
             return _response;
         }
 
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet]
