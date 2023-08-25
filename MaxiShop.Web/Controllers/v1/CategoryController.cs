@@ -3,10 +3,11 @@ using MaxiShop.Application.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace MaxiShop.Web.Controllers
+namespace MaxiShop.Web.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/Category")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
@@ -30,7 +31,7 @@ namespace MaxiShop.Web.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ResponseCache(Location = ResponseCacheLocation.None,NoStore = true)]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [HttpGet]
         [Route("Details")]
         public async Task<ActionResult> Details(int id)

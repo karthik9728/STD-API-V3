@@ -51,6 +51,19 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 builder.Services.AddResponseCaching();
 
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services.AddControllers(options =>
 {
     options.CacheProfiles.Add("Default30", new CacheProfile
@@ -84,6 +97,20 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title ="MaxiShop API Version 1",
+        Description ="Developed By CodeWithKarthik",
+        Version = "v1.0",
+    });
+
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Title = "MaxiShop API Version 2",
+        Description = "Developed By CodeWithKarthik",
+        Version = "v2.0",
+    });
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"Jwt Authorization header using the Bearer Scheme.
@@ -161,7 +188,11 @@ UpdateDatabaseAsync(app);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json","MaxiShop_V1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json","MaxiShop_V2");
+    });
 }
 
 app.UseCors("CustomPolicy");

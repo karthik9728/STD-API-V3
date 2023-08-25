@@ -12,9 +12,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 
-namespace MaxiShop.Web.Controllers
+namespace MaxiShop.Web.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/Product")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class ProductController : ControllerBase
     {

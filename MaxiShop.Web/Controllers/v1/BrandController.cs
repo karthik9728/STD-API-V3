@@ -3,9 +3,10 @@ using MaxiShop.Application.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace MaxiShop.Web.Controllers
+namespace MaxiShop.Web.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/Brand")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class BrandController : ControllerBase
     {

@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MaxiShop.Web.Controllers
+namespace MaxiShop.Web.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/User")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -75,7 +76,7 @@ namespace MaxiShop.Web.Controllers
 
                 var result = await _authService.Login(login);
 
-                if(result is string)
+                if (result is string)
                 {
                     _response.IsSuccess = true;
                     _response.StatusCode = HttpStatusCode.OK;
@@ -91,7 +92,7 @@ namespace MaxiShop.Web.Controllers
             }
             catch (Exception ex)
             {
-                _response.AddError(CommonMessage.SystemError +  ex.Message.ToString());
+                _response.AddError(CommonMessage.SystemError + ex.Message.ToString());
             }
 
             return _response;
