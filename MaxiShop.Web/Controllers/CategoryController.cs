@@ -18,6 +18,8 @@ namespace MaxiShop.Web.Controllers
 
 
         [ProducesResponseType(200)]
+        //[ResponseCache(Duration = 30)]
+        [ResponseCache(CacheProfileName = "Default30")]
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -28,6 +30,7 @@ namespace MaxiShop.Web.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ResponseCache(Location = ResponseCacheLocation.None,NoStore = true)]
         [HttpGet]
         [Route("Details")]
         public async Task<ActionResult> Details(int id)

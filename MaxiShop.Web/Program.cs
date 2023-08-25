@@ -13,6 +13,7 @@ using Serilog;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using MaxiShop.Web.Middleware;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +49,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 #endregion
 
-builder.Services.AddControllers();
+builder.Services.AddResponseCaching();
+
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default30", new CacheProfile
+    {
+        Duration = 30
+    });
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
