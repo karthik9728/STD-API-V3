@@ -14,6 +14,13 @@ using FluentValidation.AspNetCore;
 using System.Reflection;
 using MaxiShop.Web.Middleware;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 

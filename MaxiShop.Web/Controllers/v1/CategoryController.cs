@@ -1,7 +1,9 @@
 ﻿using MaxiShop.Application.DTO.Category;
 using MaxiShop.Application.Services.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace MaxiShop.Web.Controllers.v1
 {

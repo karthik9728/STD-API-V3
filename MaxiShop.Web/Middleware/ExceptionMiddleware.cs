@@ -1,6 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using MaxiShop.Application.Exceptions;
 using MaxiShop.Web.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace MaxiShop.Web.Middleware
 {
